@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.nikhil.imagespot.BuildConfig
 import com.nikhil.imagespot.data.remote.ApiService
+import com.nikhil.imagespot.data.remote.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -48,6 +49,7 @@ class NetworkModule(private val baseUrl : String) {
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(HeaderInterceptor())
             .addNetworkInterceptor(interceptor)
             .build()
     }

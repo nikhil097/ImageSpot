@@ -5,7 +5,7 @@ buildscript {
 
     ext.versions = [
             'android': [
-                    'material': '1.0.0'
+                    'material': '1.1.0'
             ],
             'androidx' : [
                     'ktx': [
