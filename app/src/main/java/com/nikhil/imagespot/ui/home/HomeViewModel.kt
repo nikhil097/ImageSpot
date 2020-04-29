@@ -14,9 +14,9 @@ class HomeViewModel@Inject constructor(private val mImagesRepository: ImagesRepo
     private val mCompositeDisposable = CompositeDisposable()
     private val _photosObserver = MutableLiveData<DataWrapper<List<Photo>>>()
 
-    fun getPhotos() {
+    fun getPhotos(query: String) {
         _photosObserver.value = DataWrapper(isLoading = true)
-        mCompositeDisposable.add(mImagesRepository.getPhotos("text")
+        mCompositeDisposable.add(mImagesRepository.getPhotos(query)
             .subscribe ({
                 _photosObserver.value = DataWrapper(response = it.photosList)
             }, {

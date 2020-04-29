@@ -9,7 +9,7 @@ import com.nikhil.imagespot.extensions.loadImageUrl
 import com.nikhil.imagespot.models.Photo
 import kotlinx.android.synthetic.main.item_thumbnail.view.*
 
-class ImagesListingAdapter(private var data: MutableList<Photo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PhotoListingAdapter(private var data: MutableList<Photo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface Callbacks {
         fun onPhotoClick(photo: Photo)
