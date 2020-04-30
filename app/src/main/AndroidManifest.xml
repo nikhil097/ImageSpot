@@ -14,9 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme"
-        android:debuggable="false"
-        tools:ignore="HardcodedDebugMode">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".ui.home.HomeActivity"
@@ -30,7 +28,7 @@
         </activity>
 
         <activity android:name=".ui.imagePreview.ImagePreviewActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.Draggable" />
 
     </application>
 

@@ -11,5 +11,6 @@
 
     <color name="colorBackground">#33FF5722</color>
     <color name="colorPrimary50">#80F44336</color>
+    <color name="colorTransparent">#00000000</color>
 
 </resources>

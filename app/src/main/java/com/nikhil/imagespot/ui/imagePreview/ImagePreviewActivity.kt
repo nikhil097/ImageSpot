@@ -36,6 +36,10 @@ class ImagePreviewActivity : BaseActivity() {
         image.transitionName = mPhoto.id
         val photoUrlString = getString(R.string.image_url, mPhoto.farm, mPhoto.server, mPhoto.id, mPhoto.secret)
 
+        hauler_view.setOnDragDismissedListener {
+            onBackPressed()
+        }
+
         Glide.with(this)
             .load(photoUrlString)
             .apply(
@@ -68,4 +72,7 @@ class ImagePreviewActivity : BaseActivity() {
             }).submit()
     }
 
+    override fun onActionBarHomeIconClicked() {
+        onBackPressed()
+    }
 }
