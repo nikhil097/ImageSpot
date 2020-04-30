@@ -1,6 +1,8 @@
 package com.nikhil.imagespot.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 class PhotoResponse(
     @SerializedName("stat")
@@ -22,6 +24,7 @@ class PhotosData (
     val photosList: List<Photo>
 )
 
+@Parcelize
 class Photo(
     @SerializedName("farm")
     val farm: Int,
@@ -41,4 +44,4 @@ class Photo(
     val server: String,
     @SerializedName("title")
     val title: String
-)
+): Parcelable

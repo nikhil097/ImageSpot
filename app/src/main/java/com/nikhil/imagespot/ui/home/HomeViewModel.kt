@@ -14,16 +14,35 @@ class HomeViewModel@Inject constructor(private val mImagesRepository: ImagesRepo
     private val mCompositeDisposable = CompositeDisposable()
     private val _photosObserver = MutableLiveData<DataWrapper<List<Photo>>>()
 
-    fun getPhotos(query: String) {
-        _photosObserver.value = DataWrapper(isLoading = true)
-        mCompositeDisposable.add(mImagesRepository.getPhotos(query)
+    var currentPage = 0
+    var totalPages = -1
+    var mIsPaginatedCall = false
+
+    fun getPhotos(query: String, isRefresh: Boolean = false) {
+        if (isRefresh) {
+            currentPage = 0
+            totalPages = -1
+        }
+
+        mIsPaginatedCall = !isRefresh
+
+        if (!mIsPaginatedCall) _photosObserver.value = DataWrapper(isLoading = true)
+
+        mCompositeDisposable.add(mImagesRepository.getPhotos(query, currentPage.plus(1).toString())
             .subscribe ({
+
+                totalPages = it.pages
+                currentPage = it.page
+
                 _photosObserver.value = DataWrapper(response = it.photosList)
             }, {
                 _photosObserver.value = DataWrapper(error = it)
             })
         )
     }
+
+    fun hasMorePages(): Boolean = (currentPage != totalPages)
+    fun isPaginatedCall(): Boolean = mIsPaginatedCall
 
     val photosObserver: LiveData<DataWrapper<List<Photo>>> = _photosObserver
 }

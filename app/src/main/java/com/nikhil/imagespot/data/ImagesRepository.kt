@@ -11,11 +11,13 @@ import javax.inject.Inject
 
 class ImagesRepository@Inject constructor(private val mApiService: ApiService) {
 
-    fun getPhotos(query: String): Observable<PhotosData> {
+    fun getPhotos(query: String, currentPage: String): Observable<PhotosData> {
 
         val map = arrayMapOf<String, String>()
         map["method"] = "flickr.photos.search"
         map["text"] = query
+        map["per_page"] = "30"
+        map["page"] = currentPage
         return mApiService.getPhotos(map)
             .map { it.photosData }
             .subscribeOn(Schedulers.io())

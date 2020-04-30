@@ -9,4 +9,6 @@
     <string name="no_images_available">No Images Available</string>
     <string name="start_searching">Start Searching</string>
 
+    <string name="unexpected_error">An unexpected error occurred.</string>
+    <string name="tap_to_reload">Tap to Reload.</string>
 </resources>
