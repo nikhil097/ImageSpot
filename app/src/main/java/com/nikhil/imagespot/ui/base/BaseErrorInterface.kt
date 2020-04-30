@@ -32,8 +32,12 @@ interface BaseErrorInterface {
         showSnackBar(view, getString(view.context!!, R.string.error_msg_timeout))
     }
 
-    fun showOtherError(errorResponse: ErrorResponse, view: View) {
-        if (!errorResponse.message.isNullOrEmpty())
-            showSnackBar(view, errorResponse.message.toString())
+    fun showOtherError(errorResponse: ErrorResponse?, view: View) {
+       if (errorResponse != null) {
+           if (!errorResponse.message.isNullOrEmpty())
+               showSnackBar(view, errorResponse.message.toString())
+       } else {
+               showSnackBar(view, view.context.getString(R.string.error_msg_no_internet))
+       }
     }
 }

@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <ProgressBar
         android:id="@+id/progress_loadmore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="@dimen/dp_16"/>
+        android:padding="@dimen/dp_16" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorLayout_loadmore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dp_16"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:padding="@dimen/dp_16"
+        android:visibility="visible">
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <TextView
+            android:id="@+id/text_loadmore_error"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="What went wrong"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_retry"/>
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tap_to_reload"
+            app:layout_constraintTop_toBottomOf="@id/text_loadmore_error"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
+            android:id="@+id/button_retry"
             android:layout_gravity="center"
+            android:clickable="false"
             android:padding="@dimen/dp_8"
-            android:tint="@color/colorGreyDark" />
+            android:tint="@color/colorGreyDark"
+            android:text="@string/retry"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_24"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/text_loadmore_error"
-                style="@style/Base.TextAppearance.AppCompat.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="What went wrong"/>
-
-            <TextView
-                style="@style/Base.TextAppearance.AppCompat.Caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tap_to_reload"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

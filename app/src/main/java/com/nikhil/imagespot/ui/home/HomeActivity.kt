@@ -3,6 +3,7 @@ package com.nikhil.imagespot.ui.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -24,6 +25,7 @@ import com.nikhil.imagespot.widgets.LoadingFooterRVAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_thumbnail.*
+import kotlinx.android.synthetic.main.layout_search_images.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -34,6 +36,7 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
     private lateinit var mViewModel: HomeViewModel
     var mPhotosList: MutableList<Any> = arrayListOf()
     private lateinit var mPhotoAdapter: PhotoListingAdapter
+    private lateinit var mLayoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +50,7 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
         setupObservers()
         addOnTextChangeObserver(edit_query)
 
-        val mLayoutManager = GridLayoutManager(this@HomeActivity, 3)
+        mLayoutManager = GridLayoutManager(this@HomeActivity, 3)
         mLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (mPhotoAdapter.getItemViewType(position)) {
@@ -60,11 +63,6 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
         recyclerview_photos.apply {
             layoutManager = mLayoutManager
             adapter = mPhotoAdapter
-            addOnScrollListener(object: InfiniteRecyclerView(mLayoutManager) {
-                override fun onLoadMore(currentPage: Int) {
-                    mViewModel.getPhotos(edit_query.text.toString().trim())
-                }
-            })
         }
     }
 
@@ -76,12 +74,18 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
                     response?.let {
                         if (it.isNotEmpty()) {
                             mPhotoAdapter.refreshData(it)
-                            text_no_images.visibility = View.GONE
                             recyclerview_photos.visibility = View.VISIBLE
-                            if (mViewModel.hasMorePages()) mPhotoAdapter.addLoadingFooter()
+                            recyclerview_photos.addOnScrollListener(object: InfiniteRecyclerView(mLayoutManager) {
+                                override fun onLoadMore(currentPage: Int) {
+                                    mViewModel.getPhotos(edit_query.text.toString().trim())
+                                }
+                            })
+                            addLoadingFooter(mViewModel.hasMorePages())
                         } else {
-                            text_no_images.visibility = View.VISIBLE
-                            recyclerview_photos.visibility = View.GONE
+                            recyclerview_photos.visibility = View.INVISIBLE
+                            view_search_images.visibility = View.VISIBLE
+                            text_title.text = getString(R.string.no_results_found)
+                            text_message.text = getString(R.string.no_results_msg)
                         }
                     }
                     error?.let {
@@ -132,9 +136,12 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
         if (active) {
             layout_shimmer.visibility = View.VISIBLE
             layout_shimmer.startShimmer()
+            recyclerview_photos.visibility = View.INVISIBLE
+            view_search_images.visibility = View.GONE
         } else {
             layout_shimmer.visibility = View.GONE
             layout_shimmer.stopShimmer()
+            recyclerview_photos.visibility = View.VISIBLE
         }
     }
 

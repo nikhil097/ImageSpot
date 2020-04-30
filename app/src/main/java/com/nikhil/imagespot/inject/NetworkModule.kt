@@ -3,10 +3,13 @@ package com.nikhil.imagespot.inject
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.nikhil.imagespot.BuildConfig
+import com.nikhil.imagespot.ImageSpotApplication
 import com.nikhil.imagespot.data.remote.ApiService
+import com.nikhil.imagespot.data.remote.CacheInterceptor
 import com.nikhil.imagespot.data.remote.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -46,11 +49,13 @@ class NetworkModule(private val baseUrl : String) {
     @Singleton
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .cache(Cache(ImageSpotApplication.instance.cacheDir, (5 * 1024 * 1024).toLong()))
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(HeaderInterceptor())
             .addNetworkInterceptor(interceptor)
+            .addInterceptor(CacheInterceptor())
             .build()
     }
 

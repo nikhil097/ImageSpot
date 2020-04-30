@@ -24,7 +24,7 @@ class ImagePreviewActivity : BaseActivity() {
         image.transitionName = mPhoto.id
         val photoUrlString = "http://farm${mPhoto.farm}.static.flickr.com/${mPhoto.server}/${mPhoto.id}_${mPhoto.secret}.jpg"
         image.loadImageUrl(photoUrlString)
-    }
 
+    }
 
 }
