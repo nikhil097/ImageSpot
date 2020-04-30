@@ -41,6 +41,11 @@ class HomeViewModel@Inject constructor(private val mImagesRepository: ImagesRepo
         )
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        mCompositeDisposable.clear()
+    }
+
     fun hasMorePages(): Boolean = (currentPage != totalPages)
     fun isPaginatedCall(): Boolean = mIsPaginatedCall
 
