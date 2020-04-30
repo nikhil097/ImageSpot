@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,7 +35,6 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
     private lateinit var mViewModel: HomeViewModel
-    var mPhotosList: MutableList<Any> = arrayListOf()
     private lateinit var mPhotoAdapter: PhotoListingAdapter
     private lateinit var mLayoutManager: GridLayoutManager
 
@@ -43,7 +43,7 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
         setContentView(R.layout.activity_home)
         setActivityTitle(getString(R.string.home))
 
-        mPhotoAdapter = PhotoListingAdapter(mPhotosList)
+        mPhotoAdapter = PhotoListingAdapter(arrayListOf())
         mPhotoAdapter.setCalbacks(this@HomeActivity)
 
         mViewModel = ViewModelProvider(this, mViewModelFactory).get(HomeViewModel::class.java)
@@ -77,13 +77,16 @@ class HomeActivity : BaseActivity(), PhotoListingAdapter.Callbacks {
                             recyclerview_photos.visibility = View.VISIBLE
                             recyclerview_photos.addOnScrollListener(object: InfiniteRecyclerView(mLayoutManager) {
                                 override fun onLoadMore(currentPage: Int) {
-                                    mViewModel.getPhotos(edit_query.text.toString().trim())
+                                    if (mViewModel.hasMorePages()) {
+                                        mViewModel.getPhotos(edit_query.text.toString().trim())
+                                    }
                                 }
                             })
                             addLoadingFooter(mViewModel.hasMorePages())
                         } else {
                             recyclerview_photos.visibility = View.INVISIBLE
                             view_search_images.visibility = View.VISIBLE
+                            image_search.setImageDrawable(ContextCompat.getDrawable(this@HomeActivity, R.drawable.ic_image_not_found))
                             text_title.text = getString(R.string.no_results_found)
                             text_message.text = getString(R.string.no_results_msg)
                         }

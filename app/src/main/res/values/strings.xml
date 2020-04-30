@@ -7,7 +7,7 @@
 
     <string name="home">Home</string>
     <string name="no_images_available">No Images Available</string>
-    <string name="start_searching">Start Searching...</string>
+    <string name="start_searching">Start Searching…</string>
 
     <string name="unexpected_error">An unexpected error occurred.</string>
     <string name="tap_to_reload">Tap to Reload.</string>
@@ -15,4 +15,6 @@
     <string name="search_for_your_favourite_images">Search for your favourite images.</string>
     <string name="no_results_found">No Results Found</string>
     <string name="no_results_msg">Try entering something else</string>
+
+    <string name="image_url">http://farm%1d.static.flickr.com/%2s/%3s_%4s.jpg</string>
 </resources>

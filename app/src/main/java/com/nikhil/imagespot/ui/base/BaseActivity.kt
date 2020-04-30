@@ -1,6 +1,8 @@
 package com.nikhil.imagespot.ui.base
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.nikhil.imagespot.R
@@ -13,6 +15,13 @@ open class BaseActivity : DaggerAppCompatActivity(), BaseErrorInterface {
     var toolbar: Toolbar? = null
 
     private var progressDialog: MaterialDialog? = null
+
+    var isDisplayHomeAsUpEnabled: Boolean
+        get() = false
+        set(value) {
+            if (supportActionBar != null)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(value)
+        }
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
@@ -64,6 +73,25 @@ open class BaseActivity : DaggerAppCompatActivity(), BaseErrorInterface {
     override fun onPause() {
         super.onPause()
         hideProgressDialog()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //Menu
+        when (item.itemId) {
+            android.R.id.home -> {
+                onActionBarHomeIconClicked()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    open fun onActionBarHomeIconClicked() {
+        if (isDisplayHomeAsUpEnabled) {
+            onBackPressed()
+        } else {
+            finish()
+        }
     }
 
     open fun showLoading(active: Boolean) {

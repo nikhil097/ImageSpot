@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.nikhil.imagespot.R
+import com.nikhil.imagespot.extensions.getString
 import com.nikhil.imagespot.extensions.inflateView
 import com.nikhil.imagespot.extensions.loadImageUrl
 import com.nikhil.imagespot.models.Photo
@@ -42,7 +43,8 @@ class PhotoListingAdapter(private var data: MutableList<Any>) : LoadingFooterRVA
     }
 
     private fun bindItem(holder: ImageViewHolder, photo: Photo, position: Int) {
-        val photoUrlString = "http://farm${photo.farm}.static.flickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg"
+        val photoUrlString = context?.getString(R.string.image_url, photo.farm, photo.server, photo.id, photo.secret).orEmpty()
+
         holder.imageThumbnail.loadImageUrl(imageUrl = photoUrlString, resourceId = R.color.colorGrey)
         holder.imageThumbnail.transitionName = photo.id
         holder.imageThumbnail.setOnClickListener {
